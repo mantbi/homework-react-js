@@ -1,11 +1,11 @@
 import style from "../styles/searchField.module.css";
 import { useState } from "react";
 
-const SearchField = () => {
+const SearchField = (props) => {
   const API_KEY = "0d720d9ec399cd0d44f361e8a7dc9255";
 
   const [inputFocused, setInputFocused] = useState(false);
-  const [input, setInput] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [resultTable, setResultTable] = useState([]);
   const [loading, setLoading] = useState(false);
   const [timer, setTimer] = useState(0);
@@ -19,7 +19,7 @@ const SearchField = () => {
     if (!mouseInResults) {
       setInputFocused(false);
     }
-    if (resultTable.length == 0) {
+    if (resultTable.length === 0) {
       setInputFocused(false);
     }
   };
@@ -58,7 +58,8 @@ const SearchField = () => {
   }
 
   function getTitle(title) {
-    setInput(title);
+    props.searchValue(title);
+    setInputValue(title);
     setResultTable([]);
     setInputFocused(false);
   }
@@ -71,12 +72,12 @@ const SearchField = () => {
             <input
               type="text"
               autoComplete="off"
-              value={input}
+              value={inputValue}
               className={`${inputFocused ? style.inputFocused : ""} ${loading ? style.loadingGif : ""}`}
               onFocus={handleFocus}
               onBlur={handleBlur}
               onChange={(e) => {
-                setInput(e.target.value);
+                setInputValue(e.target.value);
                 getResults(e.target.value);
               }}
             />
